@@ -1,0 +1,108 @@
+cmake_minimum_required(VERSION 3.17)
+project(ArduinoComponents)
+
+set(CMAKE_CXX_STANDARD 14)
+
+include_directories(include)
+include_directories(include/DisplaySH1106)
+include_directories(include/DisplaySSD1289)
+include_directories(include/DisplayST7735)
+include_directories(include/xbm)
+
+add_executable(ArduinoComponents
+        include/DisplaySH1106/DisplaySH1106.h
+        include/DisplaySSD1289/BathroomWin.h
+        include/DisplaySSD1289/ClockNet.h
+        include/DisplaySSD1289/ClockString.h
+        include/DisplaySSD1289/ColdChamberWin.h
+        include/DisplaySSD1289/DisplaySSD1289.h
+        include/DisplaySSD1289/DisplaySSD1289Net.h
+        include/DisplaySSD1289/DisplayWindow.h
+        include/DisplaySSD1289/HomeWin.h
+        include/DisplaySSD1289/Lamp.h
+        include/DisplaySSD1289/OutsideTempWin.h
+        include/DisplaySSD1289/THPWindow.h
+        include/DisplayST7735/DisplayST7735.h
+        include/xbm/led.xbm.h
+        include/xbm/led_on.xbm.h
+        include/AnalogReader.h
+        include/BH1750Adapter.h
+        include/BME280Adapter.h
+        include/DHTAdapter.h
+        include/DisplayHandler.h
+        include/DisplayView.h
+        include/DS18B20Adapter.h
+        include/LightController.h
+        include/LightControllerNet.h
+        include/LightSensorInterface.h
+        include/LightSensorNet.h
+        include/LoraNet.h
+        include/LoraNetReceive.h
+        include/LoraNetSender.h
+        include/Net.h
+        include/NetComponent.h
+        include/NetInterface.h
+        include/RadioInterface.h
+        include/RF24Net.h
+        include/RF24NetSleep.h
+        include/SmartNet.h
+        include/TempController.h
+        include/TempControllerNet.h
+        include/THInterface.h
+        include/THNet.h
+        include/THPInterface.h
+        include/THPNet.h
+        include/TInterface.h
+        include/TNet.h
+        include/ValueIntInterface.h
+        include/ValueIntNet.h
+        include/VccNet.h
+        src/DisplaySH1106/DisplaySH1106.cpp
+        src/DisplaySSD1289/BathroomWin.cpp
+        src/DisplaySSD1289/ClockNet.cpp
+        src/DisplaySSD1289/ClockString.cpp
+        src/DisplaySSD1289/ColdChamberWin.cpp
+        src/DisplaySSD1289/DisplaySSD1289.cpp
+        src/DisplaySSD1289/DisplaySSD1289Net.cpp
+        src/DisplaySSD1289/DisplayWindow.cpp
+        src/DisplaySSD1289/HomeWin.cpp
+        src/DisplaySSD1289/lamp-off-16px.c
+        src/DisplaySSD1289/lamp-on-16px.c
+        src/DisplaySSD1289/Lamp.cpp
+        src/DisplaySSD1289/mykefont2.c
+        src/DisplaySSD1289/OutsideTempWin.cpp
+        src/DisplaySSD1289/Retro16x32.c
+        src/DisplaySSD1289/Retro8x16.c
+        src/DisplaySSD1289/THPWindow.cpp
+        src/DisplayST7735/DisplayST7735.cpp
+        src/AnalogReader.cpp
+        src/BH1750Adapter.cpp
+        src/BME280Adapter.cpp
+        src/DHTAdapter.cpp
+        src/DisplayHandler.cpp
+        src/DisplayView.cpp
+        src/DS18B20Adapter.cpp
+        src/LightController.cpp
+        src/LightControllerNet.cpp
+        src/LightSensorInterface.cpp
+        src/LightSensorNet.cpp
+        src/LoraNet.cpp
+        src/LoraNetReceive.cpp
+        src/LoraNetSender.cpp
+        src/NetComponent.cpp
+        src/NetInterface.cpp
+        src/RadioInterface.cpp
+        src/RF24Net.cpp
+        src/RF24NetSleep.cpp
+        src/SmartNet.cpp
+        src/TempController.cpp
+        src/TempControllerNet.cpp
+        src/THInterface.cpp
+        src/THNet.cpp
+        src/THPInterface.cpp
+        src/THPNet.cpp
+        src/TInterface.cpp
+        src/TNet.cpp
+        src/ValueIntInterface.cpp
+        src/ValueIntNet.cpp
+        src/VccNet.cpp)
