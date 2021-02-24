@@ -1,6 +1,6 @@
 {
     "name": "ArduinoComponents",
-    "version": "0.1.12",
+    "version": "0.1.13",
     "description": "Libraries for SmartHome project",
     "keywords": "smarthome, sensors, radio, lora, rf24, ds18b20, bh1750, sh1106, ssd1289, st7735",
     "repository":
@@ -33,6 +33,7 @@
         "thijse/EEPROMEx": "0.0.0-alpha",
         "arduino-libraries/Ethernet": "^2.0",
         "arduino-libraries/SD": "^1.2",
+        "arduino-libraries/Servo": "^1.1",
         "sandeepmistry/LoRa": "^0.8",
         "rocketscream/Low-Power": "^1.6",
         "tmrh20/RF24": "^1.3",
