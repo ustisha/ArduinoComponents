@@ -21,7 +21,7 @@ void DisplaySH1106::render() {
     } while (display->nextPage());
 }
 
-void DisplayView::tempInfo(const uint8_t x, const uint8_t y, float data) {
+void DisplaySH1106::tempInfo(const uint8_t x, const uint8_t y, float data) {
     display->setDrawColor(1);
     display->setBitmapMode(0);
     display->setCursor(x, y);
@@ -30,7 +30,7 @@ void DisplayView::tempInfo(const uint8_t x, const uint8_t y, float data) {
     display->print("°C");
 }
 
-void DisplayView::humInfo(const uint8_t x, const uint8_t y, const float data) {
+void DisplaySH1106::humInfo(const uint8_t x, const uint8_t y, const float data) {
     display->setDrawColor(1);
     display->setBitmapMode(0);
     display->setCursor(x, y);
@@ -39,7 +39,7 @@ void DisplayView::humInfo(const uint8_t x, const uint8_t y, const float data) {
     display->print("%");
 }
 
-void DisplayView::lightInfo(const uint8_t x, const uint8_t y, LightController *light, const uint8_t *ledBits, const uint8_t *ledOnBits) {
+void DisplaySH1106::lightInfo(const uint8_t x, const uint8_t y, LightController *light, const uint8_t *ledBits, const uint8_t *ledOnBits) {
     const uint8_t statusY = y + 16;
     const uint8_t offTime = light->getOffTime();
     display->setDrawColor(1);
