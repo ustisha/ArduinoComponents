@@ -1,6 +1,6 @@
 {
     "name": "ArduinoComponents",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Libraries for SmartHome project",
     "keywords": "smarthome, sensors, radio, lora, rf24, bme280, bh1750",
     "repository":
@@ -21,9 +21,9 @@
     "platforms": "atmelavr",
     "build": {
         "flags": [
-            "-I DisplaySH1106",
-            "-I DisplaySSD1289",
-            "-I DisplayST7735"
+            "-I include/DisplaySH1106",
+            "-I include/DisplaySSD1289",
+            "-I include/DisplayST7735"
         ]
     },
     "dependencies":
