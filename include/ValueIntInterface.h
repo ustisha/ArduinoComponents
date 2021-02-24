@@ -20,4 +20,4 @@ protected:
     virtual int read() = 0;
 };
 
-#endif VALUEINTERFACE_H
+#endif //VALUEINTERFACE_H
