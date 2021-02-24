@@ -22,8 +22,8 @@ class SmartNet {
 public:
     uint8_t sender;
 
-    SmartNet(uint16_t s, uint8_t max) : components(new NetComponents[max]{}),
-                                        sender(s),
+    SmartNet(uint16_t s, uint8_t max) : sender(s),
+                                        components(new NetComponents[max]{}),
                                         maxCmp(max) {}
 
     void sendInfo(RadioInterface *n, long data, uint8_t cmd = CMD_INFO);
@@ -34,8 +34,8 @@ public:
 
 protected:
     NetComponents *components;
-    uint8_t i = 0;
     uint8_t maxCmp;
+    uint8_t i = 0;
 };
 
 #endif //SMARTNET_H
