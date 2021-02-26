@@ -1,6 +1,6 @@
 {
     "name": "ArduinoComponents",
-    "version": "0.1.13",
+    "version": "0.1.14",
     "description": "Libraries for SmartHome project",
     "keywords": "smarthome, sensors, radio, lora, rf24, ds18b20, bh1750, sh1106, ssd1289, st7735",
     "repository":
@@ -28,6 +28,7 @@
     },
     "dependencies":
     {
+        "SPI": "^1.0",
         "claws/BH1750": "^1.2",
         "milesburton/DallasTemperature": "^3.9",
         "thijse/EEPROMEx": "0.0.0-alpha",
