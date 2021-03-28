@@ -5,11 +5,12 @@
 
 #include <Arduino.h>
 #include <DebugLog.h>
-#include <TInterface.h>
+#include <THInterface.h>
 #include <DallasTemperature.h>
 
-class DS18B20Adapter : public TInterface {
-    using TInterface::TInterface;
+// Sensor dont support humidity measure but this need for TempController compatible.
+class DS18B20Adapter : public THInterface {
+    using THInterface::THInterface;
 public:
     DS18B20Adapter(OneWire *oneWire, byte idx);
 

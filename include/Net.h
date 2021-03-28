@@ -66,6 +66,7 @@ const uint16_t BROADCAST = 255;
 const uint16_t WWW = 254;
 const uint16_t GATEWAY = 00;
 const uint16_t BATHROOM = 01;
+const uint16_t BATHROOM_TEMP = 011;
 const uint16_t OUTSIDE_TEMP = 02;
 const uint16_t GREENHOUSE = 03;
 const uint16_t COLD_CHAMBER = 04;
@@ -88,6 +89,12 @@ const uint8_t PORT_LIGHT_CTRL_02 = 12;
 const uint8_t PORT_LIGHT_CTRL_03 = 13;
 const uint8_t PORT_LIGHT_CTRL_04 = 14;
 const uint8_t PORT_RTC_CLOCK = 15;
+const uint8_t PORT_18B20_2 = 21;
+const uint8_t PORT_18B20_3 = 22;
+const uint8_t PORT_18B20_4 = 23;
+const uint8_t PORT_TEMP_CTRL_2 = 71;
+const uint8_t PORT_TEMP_CTRL_3 = 72;
+const uint8_t PORT_TEMP_CTRL_4 = 73;
 
 // Commands
 const uint8_t CMD_TEMPERATURE = 1;

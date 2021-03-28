@@ -52,9 +52,9 @@ public:
 
     EEPROMVar<float> downLimit;
     EEPROMVar<float> upLimit;
-    EEPROMVar<uint8_t> init;
     EEPROMVar<uint8_t> mode;
     EEPROMVar<uint32_t> timeout;
+    EEPROMVar<uint8_t> init;
 
     TempController(THInterface *tiface, uint8_t rMax, uint8_t sMax, float down, float up);
 

@@ -1,16 +1,16 @@
 #include "../include/TempController.h"
 
 TempController::TempController(THInterface *tiface, uint8_t rMax, uint8_t sMax, float down, float up) :
-        relayControl(new RelayControl[rMax]{}),
-        servoControl(new ServoControl[sMax]{}),
-        relayMax(rMax),
-        servoMax(sMax),
-        tiface(tiface),
         downLimit(down),
         upLimit(up),
         mode(MODE_AUTO),
         timeout(60000),
-        init(0) {
+        init(0),
+        tiface(tiface),
+        relayControl(new RelayControl[rMax]{}),
+        servoControl(new ServoControl[sMax]{}),
+        relayMax(rMax),
+        servoMax(sMax) {
 
     init.restore();
     if (init != 1) {
@@ -134,27 +134,26 @@ void TempController::control() {
                 value = tiface->getHumidity();
             }
 
-            IF_SERIAL_DEBUG(printf_P(PSTR("[TempController::control] Relay idx: %i\n"), i));
-            if ((relayControl[i].type & TYPE_BELOW_DOWN_LIMIT &&
-                 value <= (downLimit - relayControl[i].rangeOn)) ||
-                (relayControl[i].type & TYPE_ABOVE_DOWN_LIMIT &&
-                 value >= (downLimit - relayControl[i].rangeOn))) {
-                relayOn(i);
-            } else if ((relayControl[i].type & TYPE_BELOW_DOWN_LIMIT &&
-                        value >= (downLimit - relayControl[i].rangeOff)) ||
-                       (relayControl[i].type & TYPE_ABOVE_DOWN_LIMIT &&
-                        value >= (downLimit - relayControl[i].rangeOff))) {
-                relayOff(i);
-            }
+#ifdef SERIAL_DEBUG
+            char valueBuf[8];
+            Format::floatVar(valueBuf, value);
+            IF_SERIAL_DEBUG(printf_P(PSTR("[TempController::control] Relay idx: %i, value: %s\n"), i, valueBuf));
+#endif
 
-            if ((relayControl[i].type & TYPE_ABOVE_UP_LIMIT && value >= (upLimit + relayControl[i].rangeOn)) ||
-                (relayControl[i].type & TYPE_BELOW_UP_LIMIT) && value <= (upLimit + relayControl[i].rangeOn)) {
-                relayOn(i);
-            } else if ((relayControl[i].type & TYPE_ABOVE_UP_LIMIT &&
-                        value <= (upLimit + relayControl[i].rangeOff)) ||
-                       (relayControl[i].type & TYPE_BELOW_UP_LIMIT &&
-                        value >= (upLimit + relayControl[i].rangeOff))) {
-                relayOff(i);
+            float downLimitOn = (downLimit - relayControl[i].rangeOn);
+            float upLimitOff = (upLimit + relayControl[i].rangeOff);
+            if (relayControl[i].type & TYPE_BELOW_DOWN_LIMIT) {
+                if (value < downLimitOn) {
+                    relayOn(i);
+                } else if (value > upLimitOff) {
+                    relayOff(i);
+                }
+            } else if (relayControl[i].type & TYPE_ABOVE_DOWN_LIMIT) {
+                if (value > downLimitOn) {
+                    relayOn(i);
+                } else if (value < upLimitOff) {
+                    relayOff(i);
+                }
             }
         }
     }
