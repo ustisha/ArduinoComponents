@@ -1,15 +1,13 @@
 {
     "name": "ArduinoComponents",
-    "version": "0.1.15",
+    "version": "0.1.16",
     "description": "Libraries for SmartHome project",
-    "keywords": "smarthome, sensors, radio, lora, rf24, ds18b20, bh1750, sh1106, ssd1289, st7735",
-    "repository":
-    {
+    "keywords": "smarthome, sensors, ds18b20, bh1750, sh1106, ssd1289, st7735",
+    "repository": {
         "type": "git",
         "url": "git@github.com:ustisha/ArduinoComponents.git"
     },
-    "authors":
-    [
+    "authors": [
         {
             "name": "Dmitriy Deryabin",
             "email": "dmitriy@ustisha.ru",
@@ -26,25 +24,98 @@
             "-I include/DisplayST7735"
         ]
     },
-    "dependencies":
-    {
-        "SPI": "^1.0",
-        "claws/BH1750": "^1.2",
-        "milesburton/DallasTemperature": "^3.9",
-        "thijse/EEPROMEx": "0.0.0-alpha",
-        "arduino-libraries/Ethernet": "^2.0",
-        "arduino-libraries/SD": "^1.2",
-        "arduino-libraries/Servo": "^1.1",
-        "sandeepmistry/LoRa": "^0.8",
-        "rocketscream/Low-Power": "^1.6",
-        "tmrh20/RF24": "^1.3",
-        "nrf24/RF24Network": "^1.0",
-        "olikraus/U8g2": "^2.28",
-        "adafruit/Adafruit ST7735 and ST7789 Library": "^1.6",
-        "adafruit/Adafruit GFX Library": "^1.10",
-        "adafruit/Adafruit BusIO": "^1.7",
-        "external-repo0": "https://github.com/amperka/UTFT.git#master",
-        "external-repo1": "https://github.com/olewolf/DHT_nonblocking.git#master",
-        "external-repo2": "https://github.com/Yveaux/Arduino_Vcc.git#master"
-    }
+    "dependencies": [
+        {
+            "owner": "claws",
+            "name": "BH1750",
+            "version": "^1.2"
+        },
+        {
+            "owner": "milesburton",
+            "name": "DallasTemperature",
+            "version": "^3.9"
+        },
+        {
+            "owner": "thijse",
+            "name": "EEPROMEx",
+            "version": "0.0.0-alpha"
+        },
+        {
+            "owner": "sandeepmistry",
+            "name": "LoRa",
+            "version": "^0.8"
+        },
+        {
+            "owner": "Arduino",
+            "name": "Ethernet(esp8266)",
+            "version": "^1.0",
+            "platforms": [
+                "espressif8266"
+            ]
+        },
+        {
+            "owner": "arduino-libraries",
+            "name": "Ethernet",
+            "version": "^2.0.0",
+            "platforms": [
+                "atmelavr"
+            ]
+        },
+        {
+            "owner": "arduino-libraries",
+            "name": "SD",
+            "version": "^1.2",
+            "platforms": [
+                "atmelavr"
+            ]
+        },
+        {
+            "owner": "arduino-libraries",
+            "name": "Servo",
+            "version": "^1.1",
+            "platforms": [
+                "atmelavr"
+            ]
+        },
+        {
+            "owner": "rocketscream",
+            "name": "Low-Power",
+            "version": "^1.6",
+            "platforms": [
+                "atmelavr"
+            ]
+        },
+        {
+            "owner": "olikraus",
+            "name": "U8g2",
+            "version": "^2.28"
+        },
+        {
+            "owner": "adafruit",
+            "name": "Adafruit ST7735 and ST7789 Library",
+            "version": "^1.6"
+        },
+        {
+            "owner": "adafruit",
+            "name": "Adafruit GFX Library",
+            "version": "^1.10"
+        },
+        {
+            "owner": "adafruit",
+            "name": "Adafruit BusIO",
+            "version": "^1.7"
+        },
+        {
+            "name": "external-repo0",
+            "version": "https://github.com/amperka/UTFT.git#master"
+        },
+        {
+            "name": "external-repo1",
+            "version": "https://github.com/olewolf/DHT_nonblocking.git#master"
+        },
+        {
+            "name": "external-repo2",
+            "version": "https://github.com/Yveaux/Arduino_Vcc.git#master"
+        }
+    ]
 }
