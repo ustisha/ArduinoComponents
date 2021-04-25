@@ -27,7 +27,6 @@ add_executable(ArduinoComponents
         include/xbm/led_on.xbm.h
         include/AnalogReader.h
         include/BH1750Adapter.h
-        include/BME280Adapter.h
         include/DHTAdapter.h
         include/DisplayHandler.h
         include/DisplayView.h
@@ -39,13 +38,7 @@ add_executable(ArduinoComponents
         include/LoraNet.h
         include/LoraNetReceive.h
         include/LoraNetSender.h
-        include/Net.h
-        include/NetComponent.h
         include/NetInterface.h
-        include/RadioInterface.h
-        include/RF24Net.h
-        include/RF24NetSleep.h
-        include/SmartNet.h
         include/TempController.h
         include/TempControllerNet.h
         include/THInterface.h
@@ -77,7 +70,6 @@ add_executable(ArduinoComponents
         src/DisplayST7735/DisplayST7735.cpp
         src/AnalogReader.cpp
         src/BH1750Adapter.cpp
-        src/BME280Adapter.cpp
         src/DHTAdapter.cpp
         src/DisplayHandler.cpp
         src/DisplayView.cpp
@@ -89,12 +81,7 @@ add_executable(ArduinoComponents
         src/LoraNet.cpp
         src/LoraNetReceive.cpp
         src/LoraNetSender.cpp
-        src/NetComponent.cpp
         src/NetInterface.cpp
-        src/RadioInterface.cpp
-        src/RF24Net.cpp
-        src/RF24NetSleep.cpp
-        src/SmartNet.cpp
         src/TempController.cpp
         src/TempControllerNet.cpp
         src/THInterface.cpp
