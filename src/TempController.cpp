@@ -62,7 +62,7 @@ void TempController::addRelay(Relay *r, uint8_t i, uint8_t type, float rangeOn, 
 #endif
 }
 
-void TempController::addServo(Servo *s, uint8_t i, uint8_t type, int minAngle, int maxAngle, float ratio) {
+void TempController::addServo(ServoEasing *s, uint8_t i, uint8_t type, int minAngle, int maxAngle, float ratio) {
     if (i >= servoMax) {
         return;
     }
@@ -127,7 +127,9 @@ void TempController::control() {
     float value = 0;
     for (int i = 0; i < relayMax; ++i) {
         if (relayControl[i].enabled) {
-
+            if (tiface->getStatus() <= 0) {
+                break;
+            }
             if (relayControl[i].type & TYPE_TEMPERATURE) {
                 value = tiface->get();
             } else if (relayControl[i].type & TYPE_HUMIDITY) {
@@ -212,7 +214,7 @@ void TempController::servoWrite(uint8_t i, int angle) {
         angle = servoControl[i].maxAngle;
     }
     int prevAngle = servoControl[i].servo->read();
-    servoControl[i].servo->write(angle);
+    servoControl[i].servo->startEaseTo(angle);
     if (angle != prevAngle) {
         IF_SERIAL_DEBUG(printf_P(PSTR("[TempController::servoWrite] Servo index: %d Angle: %d\n"), i, angle));
         sendCommand(CMD_SERVO_00 + i);

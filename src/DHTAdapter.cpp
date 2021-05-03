@@ -13,6 +13,7 @@ void DHTAdapter::read() {
 void DHTAdapter::tick() {
     THInterface::tick();
     if (reading && dht->measure(&temp, &hum)) {
+        status = 1;
         reading = false;
         render();
 

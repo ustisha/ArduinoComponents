@@ -6,7 +6,7 @@
 #include <Arduino.h>
 #include <DebugLog.h>
 #include <Button.h>
-#include <PIR.h>
+#include <Motion.h>
 #include <Relay.h>
 #include <Format.h>
 #include <EEPROMex.h>
@@ -16,17 +16,17 @@
 
 class LightController : public NetInterface, public DisplayHandler, virtual public HandlerInterface {
     static const uint8_t MAX_PIRS = 1;
-    static const uint8_t TYPE_PIR = 0;
+    static const uint8_t TYPE_MOTION = 0;
     static const uint8_t TYPE_ON = 1;
     static const uint8_t TYPE_OFF = 2;
     static const uint8_t TYPE_AUTO = 3;
 public:
 
-    EEPROMVar<uint32_t> timeout;
-    EEPROMVar<uint16_t> recallTimeout;
-    EEPROMVar<uint16_t> activityLimit;
+    EEPROMVar<uint16_t> timeout;
     EEPROMVar<float> activityRatio;
+    EEPROMVar<uint16_t> activityLimit;
     EEPROMVar<float> recallRatio;
+    EEPROMVar<uint16_t> recallTimeout;
     EEPROMVar<uint8_t> mode;
     EEPROMVar<uint8_t> init;
     EEPROMVar<uint8_t> energyLvl;
@@ -37,7 +37,7 @@ public:
         relay = r;
     }
 
-    void addPir(PIR *pir);
+    void addMotion(Motion *pir);
 
     void addButton(Button *btn);
 
@@ -61,7 +61,7 @@ public:
 
     void setRecallTimeout(uint16_t t);
 
-    auto getOffTime() -> long;
+    auto getOffTime() const -> long;
 
     void sendValues();
 
@@ -71,7 +71,7 @@ public:
 
 protected:
 
-    PIR *pirs[MAX_PIRS]{};
+    Motion *pirs[MAX_PIRS]{};
     Relay *relay{};
     Button *modeButton = nullptr;
 

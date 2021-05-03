@@ -10,7 +10,7 @@
 #include <NetComponent.h>
 #include <Relay.h>
 #include <Button.h>
-#include <Servo.h>
+#include <ServoEasing.h>
 #include <Format.h>
 #include <EEPROMex.h>
 #include <EEPROMVar.h>
@@ -25,7 +25,7 @@ class TempController : public NetInterface, virtual public HandlerInterface  {
     };
     struct ServoControl {
         bool enabled = false;
-        Servo *servo = nullptr;
+        ServoEasing *servo = nullptr;
         uint8_t type = 0;
         int minAngle = 0;
         int maxAngle = 0;
@@ -60,7 +60,7 @@ public:
 
     void addRelay(Relay *r, uint8_t i, uint8_t type, float rangeOn = 0.1, float rangeOff = 0.0);
 
-    void addServo(Servo *s, uint8_t i, uint8_t type, int minAngle = 0, int maxAngle = 90, float ratio = 0.8);
+    void addServo(ServoEasing *s, uint8_t i, uint8_t type, int minAngle = 0, int maxAngle = 90, float ratio = 0.8);
 
     void addServoButton(uint8_t i, Button *btn);
 
@@ -76,7 +76,17 @@ public:
 
     void setDownLimit(float limit);
 
+    float getDownLimit()
+    {
+        return downLimit;
+    }
+
     void setUpLimit(float limit);
+
+    float getUpLimit()
+    {
+        return upLimit;
+    }
 
     void setMode(uint8_t m);
 

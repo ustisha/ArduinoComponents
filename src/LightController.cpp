@@ -7,10 +7,10 @@ LightController::LightController() : timeout(60 * 1000),
                                      recallTimeout(2 * 1000),
                                      mode(MODE_AUTO),
                                      init(0),
+                                     energyLvl(ENERGY_LVL_OFF),
                                      offTime(0),
                                      timeOff(0),
-                                     activity(0),
-                                     energyLvl(ENERGY_LVL_OFF) {
+                                     activity(0) {
 
     init.restore();
     if (init != 1) {
@@ -52,10 +52,10 @@ LightController::LightController() : timeout(60 * 1000),
 #endif
 }
 
-void LightController::addPir(PIR *pir) {
-    pir->addHandler(this, TYPE_PIR);
+void LightController::addMotion(Motion *pir) {
+    pir->addHandler(this, TYPE_MOTION);
     pirs[pirIdx++] = pir;
-    IF_SERIAL_DEBUG(printf_P(PSTR("[LightController::addPir] PIR sensor added. Idx: %u\n"), pirIdx));
+    IF_SERIAL_DEBUG(printf_P(PSTR("[LightController::addMotion] motion sensor added. Idx: %u\n"), pirIdx));
 }
 
 void LightController::addButton(Button *btn) {
@@ -77,7 +77,7 @@ void LightController::call(uint8_t type, uint8_t idx) {
     } else if (type == TYPE_OFF) {
         setMode(MODE_MANUAL);
         setRelayState(RELAY_OFF);
-    } else if (type == TYPE_PIR && mode == MODE_AUTO) {
+    } else if (type == TYPE_MOTION && mode == MODE_AUTO) {
         unsigned long m = millis();
         if (energyLvl) {
             // Calc timeout in energy efficient mode
@@ -178,7 +178,7 @@ void LightController::setState(uint8_t state) {
     setRelayState(state);
 }
 
-auto LightController::getOffTime() -> long {
+long LightController::getOffTime() const {
     return timeOff > 0 ? lround((timeOff - millis()) / 1000) : 0;
 }
 
