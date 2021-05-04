@@ -1,6 +1,6 @@
 {
     "name": "ArduinoComponents",
-    "version": "0.1.17",
+    "version": "0.1.18",
     "description": "Libraries for SmartHome project",
     "keywords": "smarthome, sensors, ds18b20, bh1750, sh1106, ssd1289, st7735",
     "repository": {
@@ -38,10 +38,7 @@
         {
             "owner": "thijse",
             "name": "EEPROMEx",
-            "version": "0.0.0-alpha",
-            "platforms": [
-                "atmelavr"
-            ]
+            "version": "0.0.0-alpha"
         },
         {
             "owner": "sandeepmistry",
@@ -68,6 +65,14 @@
             "owner": "arduino-libraries",
             "name": "SD",
             "version": "^1.2",
+            "platforms": [
+                "atmelavr"
+            ]
+        },
+        {
+            "owner": "arduino-libraries",
+            "name": "Servo",
+            "version": "^1.1",
             "platforms": [
                 "atmelavr"
             ]

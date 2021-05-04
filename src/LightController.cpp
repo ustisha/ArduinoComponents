@@ -71,6 +71,7 @@ void LightController::call(uint8_t type, uint8_t idx) {
     if (type == TYPE_AUTO) {
         setMode(MODE_AUTO);
         setRelayState(RELAY_OFF);
+        resetValues();
     } else if (type == TYPE_ON) {
         setMode(MODE_MANUAL);
         setRelayState(RELAY_ON);
@@ -110,6 +111,7 @@ void LightController::setMode(uint8_t m) {
     sendCommand(CMD_MODE);
     render();
     if (mode == MODE_AUTO) {
+        setRelayState(RELAY_OFF);
         resetValues();
     }
 }
@@ -125,10 +127,10 @@ void LightController::setEnergyLevel(uint8_t lvl) {
 }
 
 void LightController::resetValues() {
-    setRelayState(RELAY_OFF);
     activity = 0;
     timeOff = 0;
     offTime = millis();
+    sendCommand(CMD_TIME_LEFT);
     render();
     IF_SERIAL_DEBUG(printf_P(PSTR("[LightController::tick] Reset values\n")));
 }
@@ -207,6 +209,7 @@ void LightController::tick() {
 #endif
         }
         if (m > timeOff) {
+            setRelayState(RELAY_OFF);
             resetValues();
         }
     }
