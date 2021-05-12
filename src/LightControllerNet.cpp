@@ -1,7 +1,7 @@
 #include "../include/LightControllerNet.h"
 
 void LightControllerNet::sendCommandData(RadioInterface *n, uint8_t r, uint8_t rp, uint8_t cmd) {
-    if (cmd >= CMD_RELAY_00 && cmd <= CMD_RELAY_09) {
+    if (cmd >= CMD_RELAY_00 && cmd <= CMD_RELAY_04) {
         sendPacket(n, r, rp, cmd, lightCtrl->getRelayState());
     } else if (cmd == CMD_MODE) {
         sendPacket(n, r, rp, cmd, lightCtrl->mode);
@@ -29,7 +29,7 @@ void LightControllerNet::receiveCommandData(Packet *p) {
         if (p->getData() == CMD_GET_VALUES) {
             lightCtrl->sendValues();
         }
-    } else if (p->getCommand() >= CMD_RELAY_00 && p->getCommand() <= CMD_RELAY_09) {
+    } else if (p->getCommand() >= CMD_RELAY_00 && p->getCommand() <= CMD_RELAY_04) {
         lightCtrl->setState(p->getData());
     } else if (p->getCommand() == CMD_MODE) {
         lightCtrl->setMode(p->getData());

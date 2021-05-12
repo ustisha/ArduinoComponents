@@ -20,16 +20,16 @@ class TempController : public NetInterface, virtual public HandlerInterface  {
         bool enabled = false;
         Relay *relay = nullptr;
         uint8_t type = 0;
-        float rangeOn = 0;
-        float rangeOff = 0;
+        EEPROMVar<float> rangeOn = 0;
+        EEPROMVar<float> rangeOff = 0;
     };
     struct ServoControl {
         bool enabled = false;
         ServoEasing *servo = nullptr;
         uint8_t type = 0;
-        int minAngle = 0;
-        int maxAngle = 0;
-        float ratio = 0;
+        EEPROMVar<int> minAngle = 0;
+        EEPROMVar<int> maxAngle = 0;
+        EEPROMVar<float> ratio = 0;
         Button *button = nullptr;
     };
 public:
@@ -70,9 +70,29 @@ public:
 
     void setRelayState(uint8_t i, uint8_t state);
 
+    auto getRelayRangeOn(uint8_t i) -> float;
+
+    auto getRelayRangeOff(uint8_t i) -> float;
+
+    void setRelayRangeOn(uint8_t i, float value);
+
+    void setRelayRangeOff(uint8_t i, float value);
+
     auto getServoState(uint8_t i) -> int;
 
     void setServoState(uint8_t i, int angle);
+
+    auto getServoMin(uint8_t i) -> int;
+
+    auto getServoMax(uint8_t i) -> int;
+
+    auto getServoRatio(uint8_t i) -> float;
+
+    void setServoMin(uint8_t i, int value);
+
+    void setServoMax(uint8_t i, int value);
+
+    void setServoRatio(uint8_t i, float value);
 
     void setDownLimit(float limit);
 
@@ -93,6 +113,14 @@ public:
     void setTimeout(uint32_t t);
 
     void sendValues();
+
+    void initDone()
+    {
+        if (init != 1) {
+            init = 1;
+            init.save();
+        }
+    }
 
     void call(uint8_t type, uint8_t idx) override;
 

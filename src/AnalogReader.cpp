@@ -5,11 +5,11 @@ AnalogReader::AnalogReader(uint8_t p) : pin(p) {
 }
 
 int AnalogReader::read() {
-    int v = analogRead(pin);
-    IF_SERIAL_DEBUG(printf_P(PSTR("[AnalogReader::read] Value: %d\n"), v));
+    value = analogRead(pin);
+    IF_SERIAL_DEBUG(printf_P(PSTR("[AnalogReader::read] Value: %d\n"), value));
     if (useMap) {
-        v = (v - inputMin) * (outputMax - outputMin) / (inputMax - inputMin) + outputMin;
-        IF_SERIAL_DEBUG(printf_P(PSTR("[AnalogReader::read] Map value: %d\n"), v));
+        value = (value - inputMin) * (outputMax - outputMin) / (inputMax - inputMin) + outputMin;
+        IF_SERIAL_DEBUG(printf_P(PSTR("[AnalogReader::read] Map value: %d\n"), value));
     }
-    return v;
+    return value;
 }

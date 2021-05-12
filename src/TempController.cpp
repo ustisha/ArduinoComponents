@@ -18,9 +18,6 @@ TempController::TempController(THInterface *tiface, uint8_t rMax, uint8_t sMax, 
         upLimit.save();
         mode.save();
         timeout.save();
-
-        init = 1;
-        init.save();
     } else {
         downLimit.restore();
         upLimit.restore();
@@ -50,11 +47,19 @@ void TempController::addRelay(Relay *r, uint8_t i, uint8_t type, float rangeOn, 
     relayControl[i].rangeOn = rangeOn;
     relayControl[i].rangeOff = rangeOff;
 
+    if (init != 1) {
+        relayControl[i].rangeOn.save();
+        relayControl[i].rangeOff.save();
+    } else {
+        relayControl[i].rangeOn.restore();
+        relayControl[i].rangeOff.restore();
+    }
+
 #ifdef SERIAL_DEBUG
-    static char onBuf[5];
-    static char offBuf[5];
-    Format::floatVar(onBuf, rangeOn);
-    Format::floatVar(offBuf, rangeOff);
+    char onBuf[8] = {};
+    char offBuf[8] = {};
+    Format::floatVar(onBuf, relayControl[i].rangeOn);
+    Format::floatVar(offBuf, relayControl[i].rangeOff);
 
     IF_SERIAL_DEBUG(
             printf_P(PSTR("[TempController::addRelay] Idx: %i, Mode: %d, On: %s, Off: %s\n"),
@@ -74,14 +79,24 @@ void TempController::addServo(ServoEasing *s, uint8_t i, uint8_t type, int minAn
     servoControl[i].ratio = ratio;
     servoControl[i].servo->write(minAngle);
 
+    if (init != 1) {
+        servoControl[i].minAngle.save();
+        servoControl[i].maxAngle.save();
+        servoControl[i].ratio.save();
+    } else {
+        servoControl[i].minAngle.restore();
+        servoControl[i].maxAngle.restore();
+        servoControl[i].ratio.restore();
+    }
+
 #ifdef SERIAL_DEBUG
-    static char ratioBuf[5];
+    char ratioBuf[5] = {};
     Format::floatVar(ratioBuf, ratio);
 
     IF_SERIAL_DEBUG(
             printf_P(PSTR(
-                    "[TempController::addServo] Idx: %i, Mode: %d, Min angle: %i,  Max angle: %i, Ratio: %s\n"),
-                     i, (int) type, minAngle, maxAngle, ratioBuf));
+                    "[TempController::addServo] Idx: %i, Mode: %d, Min angle: %d, Max angle: %d, Ratio: %s\n"),
+                     i, (int) type, (int) servoControl[i].minAngle, (int) servoControl[i].maxAngle, ratioBuf));
 #endif
 }
 
@@ -104,15 +119,21 @@ void TempController::call(uint8_t type, uint8_t idx) {
 }
 
 void TempController::tick(uint16_t sleep) {
+    sleepTime += sleep;
+    unsigned long m;
+    m = millis() + sleepTime;
+
     for (int i = 0; i < servoMax; ++i) {
         if (servoControl[i].enabled && servoControl[i].button != nullptr) {
             servoControl[i].button->tick();
         }
+        if (servoControl[i].enabled) {
+            if (servoControl[i].servo->isMoving() && (m % 50) == 0) {
+                sendCommand(CMD_SERVO_00 + i);
+            }
+        }
     }
 
-    sleepTime += sleep;
-    unsigned long m;
-    m = millis() + sleepTime;
     if (m >= (last + timeout) || last < timeout) {
         last += timeout;
         control();
@@ -221,38 +242,148 @@ void TempController::servoWrite(uint8_t i, int angle) {
     }
 }
 
-auto TempController::getRelayState(uint8_t i) -> int {
-    if (i >= relayMax || !relayControl[i].enabled) {
+auto TempController::getRelayState(uint8_t i) -> int
+{
+    if (i >= relayMax) {
+        return -1;
+    }
+    if (!relayControl[i].enabled) {
         return RELAY_DISABLED;
     }
     return relayControl[i].relay->isOn() ? RELAY_ON : RELAY_OFF;
 }
 
-void TempController::setRelayState(uint8_t i, uint8_t state) {
-    if (i >= relayMax || !relayControl[i].enabled) {
+void TempController::setRelayState(uint8_t i, uint8_t state)
+{
+    if (i >= relayMax) {
         return;
     }
-    setMode(MODE_MANUAL);
-    if (state == RELAY_ON) {
+    if (state == RELAY_DISABLED) {
+        relayControl[i].enabled = false;
+        relayOff(i);
+    } else if (state == RELAY_ON) {
+        relayControl[i].enabled = true;
+        setMode(MODE_MANUAL);
         relayOn(i);
     } else if (state == RELAY_OFF) {
+        relayControl[i].enabled = true;
+        setMode(MODE_MANUAL);
         relayOff(i);
     }
 }
 
-auto TempController::getServoState(uint8_t i) -> int {
-    if (i >= servoMax || !servoControl[i].enabled) {
+auto TempController::getRelayRangeOn(uint8_t i) -> float
+{
+    if (getRelayState(i) <= 0) {
+        return (float) getRelayState(i);
+    }
+    return relayControl[i].rangeOn;
+}
+
+auto TempController::getRelayRangeOff(uint8_t i) -> float
+{
+    if (getRelayState(i) <= 0) {
+        return (float) getRelayState(i);
+    }
+    return relayControl[i].rangeOff;
+}
+
+void TempController::setRelayRangeOn(uint8_t i, float value)
+{
+    if (i >= relayMax) {
+        return;
+    }
+    relayControl[i].rangeOn = value;
+    sendCommand(CMD_RELAY_ON_00 + i);
+    control();
+}
+
+void TempController::setRelayRangeOff(uint8_t i, float value)
+{
+    if (i >= relayMax) {
+        return;
+    }
+    relayControl[i].rangeOff = value;
+    sendCommand(CMD_RELAY_OFF_00 + i);
+    control();
+}
+
+auto TempController::getServoState(uint8_t i) -> int
+{
+    if (i >= servoMax) {
+        return -1;
+    }
+    if (!servoControl[i].enabled) {
         return SERVO_DISABLED;
     }
     return servoControl[i].servo->read();
 }
 
 void TempController::setServoState(uint8_t i, int angle) {
-    if (i >= servoMax || !servoControl[i].enabled) {
+    if (i >= servoMax) {
         return;
     }
-    setMode(MODE_MANUAL);
-    servoWrite(i, angle);
+    if (angle == -1) {
+        servoControl[i].enabled = false;
+    } else {
+        servoControl[i].enabled = true;
+        setMode(MODE_MANUAL);
+        servoWrite(i, angle);
+    }
+}
+
+auto TempController::getServoMin(uint8_t i) -> int
+{
+    if (getServoState(i) < 0) {
+        return getServoState(i);
+    }
+    return servoControl[i].minAngle;
+}
+
+auto TempController::getServoMax(uint8_t i) -> int
+{
+    if (getServoState(i) < 0) {
+        return getServoState(i);
+    }
+    return servoControl[i].maxAngle;
+}
+
+auto TempController::getServoRatio(uint8_t i) -> float
+{
+    if (getServoState(i) < 0) {
+        return (float) getServoState(i);
+    }
+    return servoControl[i].ratio;
+}
+
+void TempController::setServoMin(uint8_t i, int value)
+{
+    if (i >= servoMax) {
+        return;
+    }
+    servoControl[i].minAngle = value;
+    sendCommand(CMD_SERVO_MIN_ANGLE_00 + i);
+    control();
+}
+
+void TempController::setServoMax(uint8_t i, int value)
+{
+    if (i >= servoMax) {
+        return;
+    }
+    servoControl[i].maxAngle = value;
+    sendCommand(CMD_SERVO_MAX_ANGLE_00 + i);
+    control();
+}
+
+void TempController::setServoRatio(uint8_t i, float value)
+{
+    if (i >= servoMax) {
+        return;
+    }
+    servoControl[i].ratio = value;
+    sendCommand(CMD_SERVO_RATIO_00 + i);
+    control();
 }
 
 void TempController::setMode(uint8_t m) {
@@ -297,13 +428,18 @@ void TempController::sendValues() {
     sendCommand(CMD_DOWN_LIMIT);
     sendCommand(CMD_TIMEOUT);
     for (int i = 0; i < relayMax; ++i) {
-        if (relayControl[i].enabled) {
+        if (relayControl[i].relay != nullptr) {
             sendCommand(CMD_RELAY_00 + i);
+            sendCommand(CMD_RELAY_ON_00 + i);
+            sendCommand(CMD_RELAY_OFF_00 + i);
         }
     }
     for (int i = 0; i < servoMax; ++i) {
-        if (servoControl[i].enabled) {
+        if (servoControl[i].servo != nullptr) {
             sendCommand(CMD_SERVO_00 + i);
+            sendCommand(CMD_SERVO_MIN_ANGLE_00 + i);
+            sendCommand(CMD_SERVO_MAX_ANGLE_00 + i);
+            sendCommand(CMD_SERVO_RATIO_00 + i);
         }
     }
 }
