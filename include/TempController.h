@@ -110,7 +110,7 @@ public:
 
     void setMode(uint8_t m);
 
-    void setTimeout(uint32_t t);
+    void setTimeout(uint16_t t);
 
     void sendValues();
 
