@@ -8,7 +8,7 @@
 #include <THInterface.h>
 #include <DallasTemperature.h>
 
-// Sensor dont support humidity measure but this need for TempController compatible.
+// Sensor dont support humidity measure but this need for TempCtrlRelay compatible.
 class DS18B20Adapter : public THInterface {
     using THInterface::THInterface;
 public:

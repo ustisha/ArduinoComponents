@@ -39,8 +39,8 @@ add_executable(ArduinoComponents
         include/LoraNetReceive.h
         include/LoraNetSender.h
         include/NetInterface.h
-        include/TempController.h
-        include/TempControllerNet.h
+        include/TempCtrlRelay.h
+        include/TempCtrlRelayNet.h
         include/THInterface.h
         include/THNet.h
         include/THPInterface.h
@@ -82,8 +82,8 @@ add_executable(ArduinoComponents
         src/LoraNetReceive.cpp
         src/LoraNetSender.cpp
         src/NetInterface.cpp
-        src/TempController.cpp
-        src/TempControllerNet.cpp
+        src/TempCtrlRelay.cpp
+        src/TempCtrlRelayNet.cpp
         src/THInterface.cpp
         src/THNet.cpp
         src/THPInterface.cpp
