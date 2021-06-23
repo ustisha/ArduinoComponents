@@ -1,6 +1,6 @@
 {
     "name": "ArduinoComponents",
-    "version": "0.1.21",
+    "version": "0.1.22",
     "description": "Libraries for SmartHome project",
     "keywords": "smarthome, sensors, ds18b20, bh1750, sh1106, ssd1289, st7735",
     "repository": {

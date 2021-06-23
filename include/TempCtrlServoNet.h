@@ -13,6 +13,7 @@ class TempCtrlServoNet : public TempCtrlNet
 public:
     TempCtrlServoNet(SmartNet *n, uint8_t sp, uint8_t max, TempCtrlServo *ctrl) : TempCtrlNet(n, sp, max, ctrl)
     {
+        tempCtrl = ctrl;
     }
 
     void sendCommandData(RadioInterface *n, uint8_t r, uint8_t rp, uint8_t cmd) override;
