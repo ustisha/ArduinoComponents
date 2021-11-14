@@ -12,7 +12,10 @@ void DHTAdapter::read() {
 
 void DHTAdapter::tick() {
     THInterface::tick();
-    if (reading && dht->measure(&temp, &hum)) {
+    float t, h;
+    if (reading && dht->measure(&t, &h)) {
+        temp = tempFilter.filtered(t);
+        hum = humFilter.filtered(h);
         status = 1;
         reading = false;
         render();

@@ -8,6 +8,7 @@
 #include <Format.h>
 #include <THInterface.h>
 #include <dht_nonblocking.h>
+#include <GyverFilters.h>
 
 class DHTAdapter : public THInterface {
 
@@ -21,6 +22,7 @@ public:
 protected:
     bool reading = false;
     DHT_nonblocking *dht;
+    GMedian3<float> tempFilter, humFilter;
 };
 
 

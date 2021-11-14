@@ -7,7 +7,8 @@
 #include <DebugLog.h>
 #include <THPInterface.h>
 #include <Wire.h>
-#include <BME280.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
 
 class BME280Adapter : public THPInterface {
 
@@ -17,7 +18,7 @@ public:
     void read() override;
 
 protected:
-    BME280 *bme;
+    Adafruit_BME280 *bme;
 };
 
 #endif //BMETEMPHUMPRESSURE_H
