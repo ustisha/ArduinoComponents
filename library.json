@@ -1,6 +1,6 @@
 {
     "name": "ArduinoComponents",
-    "version": "0.1.23",
+    "version": "0.1.24",
     "description": "Libraries for SmartHome project",
     "keywords": "smarthome, sensors, ds18b20, bme280, bh1750, sh1106, ssd1289, st7735",
     "repository": {
@@ -28,17 +28,12 @@
         {
             "owner": "claws",
             "name": "BH1750",
-            "version": "^1.2"
+            "version": "~1.1"
         },
         {
             "owner": "milesburton",
             "name": "DallasTemperature",
             "version": "^3.9"
-        },
-        {
-            "owner": "gyverlibs",
-            "name": "GyverFilters",
-            "version": "^3.0"
         },
         {
             "owner": "adafruit",

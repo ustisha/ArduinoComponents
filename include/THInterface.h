@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <TInterface.h>
+#include <Median3.h>
 
 class THInterface : public TInterface {
 
@@ -13,6 +14,7 @@ public:
     }
 
 protected:
+    Median3<float> humFilter;
     float hum{};
 };
 

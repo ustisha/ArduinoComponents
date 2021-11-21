@@ -13,9 +13,10 @@ DS18B20Adapter::DS18B20Adapter(OneWire *oneWire, byte idx) : addressIdx(idx) {
     sensors->requestTemperatures();
 }
 
-void DS18B20Adapter::read() {
+void DS18B20Adapter::read()
+{
     sensors->requestTemperatures();
-    temp = sensors->getTempCByIndex(addressIdx);
+    temp = tempFilter.filtered(sensors->getTempCByIndex(addressIdx));
 
 #ifdef SERIAL_DEBUG
     String t(temp);
