@@ -1,6 +1,6 @@
 {
     "name": "ArduinoComponents",
-    "version": "0.1.25",
+    "version": "0.1.26",
     "description": "Libraries for SmartHome project",
     "keywords": "smarthome, sensors, ds18b20, bme280, bh1750, sh1106, ssd1289, st7735",
     "repository": {
@@ -38,12 +38,17 @@
         {
             "owner": "adafruit",
             "name": "Adafruit Unified Sensor",
-            "version": "^1.1.4"
+            "version": "^1.1"
         },
         {
             "owner": "adafruit",
             "name": "Adafruit BME280 Library",
-            "version": "^2.2.1"
+            "version": "^2.2"
+        },
+        {
+            "owner": "adafruit",
+            "name": "DHT sensor library",
+            "version": "^1.4"
         },
         {
             "owner": "thijse",
@@ -99,34 +104,6 @@
             "platforms": [
                 "atmelavr"
             ]
-        },
-        {
-            "owner": "olikraus",
-            "name": "U8g2",
-            "version": "^2.28"
-        },
-        {
-            "owner": "adafruit",
-            "name": "Adafruit ST7735 and ST7789 Library",
-            "version": "^1.6"
-        },
-        {
-            "owner": "adafruit",
-            "name": "Adafruit GFX Library",
-            "version": "^1.10"
-        },
-        {
-            "owner": "adafruit",
-            "name": "Adafruit BusIO",
-            "version": "^1.7"
-        },
-        {
-            "name": "external-repo0",
-            "version": "https://github.com/amperka/UTFT.git#master"
-        },
-        {
-            "name": "external-repo2",
-            "version": "https://github.com/Yveaux/Arduino_Vcc.git#master"
         }
     ]
 }
