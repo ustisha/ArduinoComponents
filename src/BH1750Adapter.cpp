@@ -1,12 +1,12 @@
 #include "../include/BH1750Adapter.h"
 
-BH1750Adapter::BH1750Adapter(BH1750Adapter::BHMode mode) {
-    bh = new BH1750();
+BH1750Adapter::BH1750Adapter(BH1750Address mode) {
+    bh = new hp_BH1750();
     status = (int) bh->begin(mode);
 }
 
 void BH1750Adapter::read() {
-    light = bh->readLightLevel();
+    light = bh->getLux();
 
 #ifdef SERIAL_DEBUG
     String l(light);

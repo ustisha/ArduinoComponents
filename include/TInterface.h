@@ -6,7 +6,6 @@
 #include <Arduino.h>
 #include <DebugLog.h>
 #include <DisplayHandler.h>
-#include <Median3.h>
 
 class TInterface: public DisplayHandler {
     const uint32_t DEFAULT_POLL_INTERVAL = 30000;
@@ -28,7 +27,6 @@ public:
     void tick(uint16_t sleep = 0);
 
 protected:
-    Median3<float> tempFilter;
     float temp = -1;
     int status = -1;
     unsigned long sleepTime = 0;

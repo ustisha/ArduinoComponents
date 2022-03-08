@@ -7,8 +7,8 @@
 #include <DebugLog.h>
 #include <Format.h>
 #include <THInterface.h>
-#include <dht_nonblocking.h>
-#include <Median3.h>
+#include <Adafruit_Sensor.h>
+#include <DHT.h>
 
 class DHTAdapter : public THInterface {
 
@@ -17,11 +17,8 @@ public:
 
     void read() override;
 
-    void tick();
-
 protected:
-    bool reading = false;
-    DHT_nonblocking *dht;
+    DHT *dht;
 };
 
 

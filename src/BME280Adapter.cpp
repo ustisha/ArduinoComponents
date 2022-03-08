@@ -16,8 +16,8 @@ BME280Adapter::BME280Adapter(TwoWire &wire, uint8_t address) {
 void BME280Adapter::read() {
     bme->takeForcedMeasurement();
 
-    temp = tempFilter.filtered(bme->readTemperature());
-    hum = humFilter.filtered(bme->readHumidity());
+    temp = bme->readTemperature();
+    hum = bme->readHumidity();
     pressure = bme->readPressure();
 
 #ifdef SERIAL_DEBUG

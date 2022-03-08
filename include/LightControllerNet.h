@@ -1,6 +1,8 @@
 #ifndef LIGHTCONTROLLERNET_H
 #define LIGHTCONTROLLERNET_H
 
+//#define SERIAL_DEBUG
+
 #include <Arduino.h>
 #include <DebugLog.h>
 #include <NetComponent.h>

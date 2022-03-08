@@ -2,27 +2,22 @@
 #define TEMPNET_H
 
 #include <Arduino.h>
-#include <TInterface.h>
+#include <TVirtual.h>
 #include <NetComponent.h>
 
 class TNet : public NetComponent {
 
 public:
-    TNet(SmartNet *n, uint8_t sp, uint8_t max, TInterface *t) : NetComponent(n, sp, max) {
+    TNet(SmartNet *n, uint8_t sp, uint8_t max, TVirtual *t) : NetComponent(n, sp, max) {
         temperature = t;
     }
 
     void sendCommandData(RadioInterface *n, uint8_t r, uint8_t rp, uint8_t cmd) override;
 
 protected:
-    TInterface *temperature;
+    TVirtual *temperature;
 
-    /**
-     * Realisation not needed.
-     * @param cmd
-     * @param data
-     */
-    void receiveCommandData(Packet *p) override {};
+    void receiveCommandData(Packet *p) override;
 
 };
 

@@ -5,20 +5,19 @@
 
 #include <Arduino.h>
 #include <DebugLog.h>
-#include <BH1750.h>
+#include <hp_BH1750.h>
 #include <LightSensorInterface.h>
 
 class BH1750Adapter : public LightSensorInterface {
-    typedef BH1750::Mode BHMode;
 public:
-    explicit BH1750Adapter(BHMode mode);
+    explicit BH1750Adapter(BH1750Address mode);
 
     void read() override;
 
     auto getStatus() -> int;
 
 protected:
-    BH1750 *bh;
+    hp_BH1750 *bh;
     int status = 0;
 };
 

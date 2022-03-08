@@ -69,31 +69,34 @@ void LightController::addButton(Button *btn) {
 void LightController::call(uint8_t type, uint8_t idx) {
     IF_SERIAL_DEBUG(printf_P(PSTR("[LightController::call] Type: %u, Index: %u \n"), type, idx));
     if (type == TYPE_AUTO) {
+        timeOff = 0;
+        setRelayState(RELAY_OFF);
         setMode(MODE_AUTO);
-        setRelayState(RELAY_OFF);
-        resetValues();
     } else if (type == TYPE_ON) {
-        setMode(MODE_MANUAL);
+        timeOff = 0;
         setRelayState(RELAY_ON);
-    } else if (type == TYPE_OFF) {
         setMode(MODE_MANUAL);
+    } else if (type == TYPE_OFF) {
+        timeOff = 0;
         setRelayState(RELAY_OFF);
+        setMode(MODE_MANUAL);
     } else if (type == TYPE_MOTION && mode == MODE_AUTO) {
         unsigned long m = millis();
+        uint16_t currTimeout = timeout;
         if (energyLvl) {
             // Calc timeout in energy efficient mode
-            timeout = lround(timeout / (energyLvl + 1));
+            currTimeout = lround(timeout / (energyLvl + 1));
             IF_SERIAL_DEBUG(printf_P(PSTR("[LightController::call] Energy efficient. Mode: %u\n"), energyLvl));
         }
-        uint32_t newTime = m + timeout;
+        uint32_t newTime = m + currTimeout;
         if (offTime != 0 && (m - offTime) < recallTimeout) {
-            newTime += lround(timeout * recallRatio);
+            newTime += lround(currTimeout * recallRatio);
             IF_SERIAL_DEBUG(printf_P(PSTR("[LightController::call] Recall raise\n")));
         } else if (activity >= 1) {
             if (activity > activityLimit) {
                 activity = activityLimit;
             }
-            newTime += lround(timeout * activityRatio * (float) activity);
+            newTime += lround(currTimeout * activityRatio * (float) activity);
             IF_SERIAL_DEBUG(printf_P(PSTR("[LightController::call] Activity increase\n")));
         }
 
@@ -109,11 +112,11 @@ void LightController::setMode(uint8_t m) {
     mode = m;
     mode.save();
     sendCommand(CMD_MODE);
-    render();
     if (mode == MODE_AUTO) {
         setRelayState(RELAY_OFF);
         resetValues();
     }
+    render();
 }
 
 void LightController::setEnergyLevel(uint8_t lvl) {
@@ -176,8 +179,8 @@ void LightController::setRelayState(uint8_t state) {
 }
 
 void LightController::setState(uint8_t state) {
-    setMode(MODE_MANUAL);
     setRelayState(state);
+    setMode(MODE_MANUAL);
 }
 
 long LightController::getOffTime() const {

@@ -3,19 +3,20 @@
 
 #include <Arduino.h>
 #include <DebugLog.h>
+#include <DisplayHandler.h>
 
-class ValueIntInterface {
+class ValueIntInterface: public DisplayHandler {
 
 public:
 
-    int get() {
+    long get() {
         this->read();
         return value;
     }
 
 protected:
 
-    int value = 0;
+    long value = 0;
 
     virtual int read() = 0;
 };
