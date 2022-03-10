@@ -19,10 +19,8 @@ void DS18B20Adapter::read()
     temp = sensors->getTempCByIndex(addressIdx);
 
 #ifdef SERIAL_DEBUG
-    String t(temp);
-    static char buffer[8];
-    t.toCharArray(buffer, 8);
-
+    char buffer[8]{};
+    Format::floatVar(buffer, temp);
     IF_SERIAL_DEBUG(printf_P(PSTR("[DS18B20Adapter::read] Temperature: %s\n"), buffer));
 #endif
 }

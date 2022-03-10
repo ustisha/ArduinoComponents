@@ -10,7 +10,7 @@
 #include <NetComponent.h>
 #include <Relay.h>
 #include <Button.h>
-#include <ServoEasing.h>
+#include <ServoEasing.hpp>
 #include <Format.h>
 #include <EEPROMex.h>
 #include <EEPROMVar.h>

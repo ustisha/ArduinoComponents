@@ -22,7 +22,7 @@ class LightController : public NetInterface, public DisplayHandler, virtual publ
     static const uint8_t TYPE_AUTO = 3;
 public:
 
-    EEPROMVar<uint16_t> timeout;
+    EEPROMVar<uint32_t> timeout;
     EEPROMVar<float> activityRatio;
     EEPROMVar<uint16_t> activityLimit;
     EEPROMVar<float> recallRatio;

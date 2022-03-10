@@ -82,21 +82,21 @@ void LightController::call(uint8_t type, uint8_t idx) {
         setMode(MODE_MANUAL);
     } else if (type == TYPE_MOTION && mode == MODE_AUTO) {
         unsigned long m = millis();
-        uint16_t currTimeout = timeout;
+        uint32_t currTimeout = timeout;
         if (energyLvl) {
             // Calc timeout in energy efficient mode
-            currTimeout = lround(timeout / (energyLvl + 1));
+            currTimeout = lround(double(timeout) / (energyLvl + 1));
             IF_SERIAL_DEBUG(printf_P(PSTR("[LightController::call] Energy efficient. Mode: %u\n"), energyLvl));
         }
         uint32_t newTime = m + currTimeout;
         if (offTime != 0 && (m - offTime) < recallTimeout) {
-            newTime += lround(currTimeout * recallRatio);
+            newTime += lround(double(currTimeout) * recallRatio);
             IF_SERIAL_DEBUG(printf_P(PSTR("[LightController::call] Recall raise\n")));
         } else if (activity >= 1) {
             if (activity > activityLimit) {
                 activity = activityLimit;
             }
-            newTime += lround(currTimeout * activityRatio * (float) activity);
+            newTime += lround(double(currTimeout) * activityRatio * (float) activity);
             IF_SERIAL_DEBUG(printf_P(PSTR("[LightController::call] Activity increase\n")));
         }
 

@@ -32,12 +32,12 @@ protected:
         T value = 0;
     };
 
-    typedef struct ThUpdate : public ValueUpdate<float>
+    struct ThUpdate : public ValueUpdate<float>
     {
         float value2 = 0;
     };
 
-    typedef struct LightUpdate : public ValueUpdate<uint8_t>
+    struct LightUpdate : public ValueUpdate<uint8_t>
     {
         uint8_t mode = 255;
         int16_t timeout = 0;

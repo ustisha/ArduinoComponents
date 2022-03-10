@@ -1,23 +1,45 @@
 #include "../include/BH1750Adapter.h"
 
-BH1750Adapter::BH1750Adapter(BH1750Address mode) {
+BH1750Adapter::BH1750Adapter(BH1750Address mode)
+{
     bh = new hp_BH1750();
     status = (int) bh->begin(mode);
+    IF_SERIAL_DEBUG(printf_P(PSTR("[BH1750Adapter] Status: %d\n"), status));
 }
 
-void BH1750Adapter::read() {
-    light = bh->getLux();
-
+auto BH1750Adapter::getLuxInternal() -> float
+{
+    float lux = bh->getLux();
 #ifdef SERIAL_DEBUG
-    String l(light);
-    static char buffer[10];
-    l.toCharArray(buffer, 10);
-
+    char buffer[10]{};
+    Format::floatVar(buffer, lux);
     IF_SERIAL_DEBUG(printf_P(PSTR("[BH1750Adapter::read] Lux: %s\n"), buffer));
 #endif
+    return lux;
 }
 
-int BH1750Adapter::getStatus() {
-    return status;
+#ifdef NON_BLOCKING
+
+void BH1750Adapter::read()
+{
+    reading = true;
+    bh->start();
+    IF_SERIAL_DEBUG(printf_P(PSTR("[BH1750Adapter::read] Read started\n")));
 }
 
+void BH1750Adapter::tick()
+{
+    if (bh->hasValue()) {
+        light = getLuxInternal();
+    }
+}
+
+#else
+
+void BH1750Adapter::read()
+{
+    bh->start();
+    light = getLuxInternal();
+}
+
+#endif
