@@ -1,6 +1,6 @@
 {
     "name": "ArduinoComponents",
-    "version": "0.1.27",
+    "version": "0.1.28",
     "description": "Libraries for SmartHome project",
     "keywords": "smarthome, sensors, ds18b20, bme280, bh1750",
     "repository": {
@@ -65,6 +65,13 @@
             "owner": "rocketscream",
             "name": "Low-Power",
             "version": "^1.6",
+            "platforms": [
+                "atmelavr"
+            ]
+        },
+        {
+            "name": "external-repo1",
+            "version": "https://github.com/Yveaux/Arduino_Vcc.git#master",
             "platforms": [
                 "atmelavr"
             ]

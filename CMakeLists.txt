@@ -1,32 +1,14 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.21)
 project(ArduinoComponents)
 
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(include)
-include_directories(include/DisplaySH1106)
-include_directories(include/DisplaySSD1289)
-include_directories(include/DisplayST7735)
-include_directories(include/xbm)
 
 add_executable(ArduinoComponents
-        include/DisplaySH1106/DisplaySH1106.h
-        include/DisplaySSD1289/BathroomWin.h
-        include/DisplaySSD1289/ClockNet.h
-        include/DisplaySSD1289/ClockString.h
-        include/DisplaySSD1289/ColdChamberWin.h
-        include/DisplaySSD1289/DisplaySSD1289.h
-        include/DisplaySSD1289/DisplaySSD1289Net.h
-        include/DisplaySSD1289/DisplayWindow.h
-        include/DisplaySSD1289/HomeWin.h
-        include/DisplaySSD1289/Lamp.h
-        include/DisplaySSD1289/OutsideTempWin.h
-        include/DisplaySSD1289/THPWindow.h
-        include/DisplayST7735/DisplayST7735.h
-        include/xbm/led.xbm.h
-        include/xbm/led_on.xbm.h
         include/AnalogReader.h
         include/BH1750Adapter.h
+        include/BME280Adapter.h
         include/DHTAdapter.h
         include/DisplayHandler.h
         include/DisplayView.h
@@ -35,41 +17,29 @@ add_executable(ArduinoComponents
         include/LightControllerNet.h
         include/LightSensorInterface.h
         include/LightSensorNet.h
-        include/LoraNet.h
-        include/LoraNetReceive.h
-        include/LoraNetSender.h
-        include/NetInterface.h
+        include/MotionNet.h
+        include/TempCtrl.h
+        include/TempCtrlNet.h
         include/TempCtrlRelay.h
         include/TempCtrlRelayNet.h
+        include/TempCtrlServo.h
+        include/TempCtrlServoNet.h
         include/THInterface.h
         include/THNet.h
         include/THPInterface.h
         include/THPNet.h
         include/TInterface.h
         include/TNet.h
+        include/TVirtual.h
+        include/ValueInt.h
         include/ValueIntInterface.h
         include/ValueIntNet.h
         include/VccNet.h
-        src/DisplaySH1106/DisplaySH1106.cpp
-        src/DisplaySSD1289/BathroomWin.cpp
-        src/DisplaySSD1289/ClockNet.cpp
-        src/DisplaySSD1289/ClockString.cpp
-        src/DisplaySSD1289/ColdChamberWin.cpp
-        src/DisplaySSD1289/DisplaySSD1289.cpp
-        src/DisplaySSD1289/DisplaySSD1289Net.cpp
-        src/DisplaySSD1289/DisplayWindow.cpp
-        src/DisplaySSD1289/HomeWin.cpp
-        src/DisplaySSD1289/lamp-off-16px.c
-        src/DisplaySSD1289/lamp-on-16px.c
-        src/DisplaySSD1289/Lamp.cpp
-        src/DisplaySSD1289/mykefont2.c
-        src/DisplaySSD1289/OutsideTempWin.cpp
-        src/DisplaySSD1289/Retro16x32.c
-        src/DisplaySSD1289/Retro8x16.c
-        src/DisplaySSD1289/THPWindow.cpp
-        src/DisplayST7735/DisplayST7735.cpp
+        include/WashingMachine.h
+        include/WashingMachineNet.h
         src/AnalogReader.cpp
         src/BH1750Adapter.cpp
+        src/BME280Adapter.cpp
         src/DHTAdapter.cpp
         src/DisplayHandler.cpp
         src/DisplayView.cpp
@@ -78,12 +48,13 @@ add_executable(ArduinoComponents
         src/LightControllerNet.cpp
         src/LightSensorInterface.cpp
         src/LightSensorNet.cpp
-        src/LoraNet.cpp
-        src/LoraNetReceive.cpp
-        src/LoraNetSender.cpp
-        src/NetInterface.cpp
+        src/MotionNet.cpp
+        src/TempCtrl.cpp
+        src/TempCtrlNet.cpp
         src/TempCtrlRelay.cpp
         src/TempCtrlRelayNet.cpp
+        src/TempCtrlServo.cpp
+        src/TempCtrlServoNet.cpp
         src/THInterface.cpp
         src/THNet.cpp
         src/THPInterface.cpp
@@ -92,4 +63,5 @@ add_executable(ArduinoComponents
         src/TNet.cpp
         src/ValueIntInterface.cpp
         src/ValueIntNet.cpp
-        src/VccNet.cpp)
+        src/VccNet.cpp
+        src/WashingMachineNet.cpp)
