@@ -8,7 +8,12 @@ TempCtrlServo::TempCtrlServo(THInterface *tiface, uint8_t sMax, float down, floa
 
 }
 
+#ifdef SERVO_EASING
 void TempCtrlServo::addServo(ServoEasing *s, uint8_t i, uint8_t type, int minAngle, int maxAngle, float ratio)
+#else
+
+void TempCtrlServo::addServo(Servo *s, uint8_t i, uint8_t type, int minAngle, int maxAngle, float ratio)
+#endif
 {
     if (i >= servoMax) {
         return;
@@ -71,9 +76,11 @@ void TempCtrlServo::tick(uint16_t sleep)
             servoControl[i].button->tick();
         }
         if (servoControl[i].enabled) {
+#ifdef SERVO_EASING
             if (servoControl[i].servo->isMoving() && (millis() % 50) == 0) {
                 sendCommand(CMD_SERVO_00 + i);
             }
+#endif
         }
     }
     TempCtrl::tick(sleep);
@@ -120,7 +127,11 @@ void TempCtrlServo::servoWrite(uint8_t i, int angle)
         angle = servoControl[i].maxAngle;
     }
     int prevAngle = servoControl[i].servo->read();
+#ifdef SERVO_EASING
     servoControl[i].servo->startEaseTo(angle);
+#else
+    servoControl[i].servo->write(angle);
+#endif
     if (angle != prevAngle) {
         IF_SERIAL_DEBUG(printf_P(PSTR("[TempCtrlServo::servoWrite] Servo index: %d Angle: %d\n"), i, angle));
         sendCommand(CMD_SERVO_00 + i);

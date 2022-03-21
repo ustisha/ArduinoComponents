@@ -4,6 +4,7 @@ BH1750Adapter::BH1750Adapter(BH1750Address mode)
 {
     bh = new hp_BH1750();
     status = (int) bh->begin(mode);
+    bh->setQuality(BH1750Quality::BH1750_QUALITY_HIGH);
     IF_SERIAL_DEBUG(printf_P(PSTR("[BH1750Adapter] Status: %d\n"), status));
 }
 

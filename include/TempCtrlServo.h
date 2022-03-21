@@ -1,6 +1,12 @@
 #ifndef TEMPCTRLSERVO_H
 #define TEMPCTRLSERVO_H
 
+#ifdef defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) \
+|| defined (__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__) || defined (__AVR_ATtiny25__) \
+|| defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
+#define SERVO_EASING
+#endif
+
 //#define SERIAL_DEBUG
 
 #include <Arduino.h>
@@ -10,15 +16,29 @@
 #include <NetComponent.h>
 #include <Relay.h>
 #include <Button.h>
+
+#ifdef SERVO_EASING
 #include <ServoEasing.h>
+#else
+
+#include <Servo.h>
+
+#endif
+
 #include <Format.h>
 #include <EEPROMex.h>
 #include <EEPROMVar.h>
 
-class TempCtrlServo : public TempCtrl, virtual public HandlerInterface  {
-    struct ServoControl {
+class TempCtrlServo : public TempCtrl, virtual public HandlerInterface
+{
+    struct ServoControl
+    {
         EEPROMVar<bool> enabled = false;
+#ifdef SERVO_EASING
         ServoEasing *servo = nullptr;
+#else
+        Servo *servo = nullptr;
+#endif
         uint8_t type = 0;
         EEPROMVar<int> minAngle = 0;
         EEPROMVar<int> maxAngle = 0;
@@ -32,7 +52,13 @@ public:
 
     TempCtrlServo(THInterface *tiface, uint8_t sMax, float down, float up);
 
+#ifdef SERVO_EASING
     void addServo(ServoEasing *s, uint8_t i, uint8_t type, int minAngle = 0, int maxAngle = 90, float ratio = 0.8);
+#else
+
+    void addServo(Servo *s, uint8_t i, uint8_t type, int minAngle = 0, int maxAngle = 90, float ratio = 0.8);
+
+#endif
 
     void addServoButton(uint8_t i, Button *btn);
 
