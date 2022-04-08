@@ -9,7 +9,7 @@ CtrlServo::CtrlServo(uint8_t servoPin, int16_t minAngle, int16_t maxAngle) :
         init(0)
 {
     servo = new ServoEasing();
-    status = servo->attach(servoPin, START_DEGREE_VALUE);
+    status = servo->attach(servoPin);
 
     init.restore();
     if (init != 1) {

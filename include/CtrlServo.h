@@ -13,8 +13,6 @@
 #include <EEPROMex.h>
 #include <EEPROMVar.h>
 
-#define START_DEGREE_VALUE  0
-
 class CtrlServo : public NetInterface, virtual public HandlerInterface
 {
 public:
