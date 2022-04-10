@@ -1,16 +1,11 @@
 #ifndef TEMPCTRLSERVO_H
 #define TEMPCTRLSERVO_H
 
-#ifdef defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) \
-|| defined (__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__) || defined (__AVR_ATtiny25__) \
-|| defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
-#define SERVO_EASING
-#endif
-
 //#define SERIAL_DEBUG
 
 #include <Arduino.h>
 #include <DebugLog.h>
+#include <Config.h>
 #include <THInterface.h>
 #include <TempCtrl.h>
 #include <NetComponent.h>
@@ -90,7 +85,6 @@ protected:
 
     void servoWrite(uint8_t i, int angle);
 
-    THInterface *tiface;
     ServoControl *servoControl;
     uint8_t servoMax;
 };

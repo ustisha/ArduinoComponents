@@ -9,56 +9,47 @@
 #include <THInterface.h>
 #include <NetInterface.h>
 #include <NetComponent.h>
-#include <RelayInterface.h>
-#include <Button.h>
+#include <CtrlRelay.h>
 #include <Format.h>
 #include <EEPROMex.h>
 #include <EEPROMVar.h>
 
 class TempCtrlRelay : public TempCtrl, virtual public HandlerInterface
 {
-    struct RelayControl
-    {
-        EEPROMVar<bool> enabled = false;
-        RelayInterface *relay = nullptr;
-        uint8_t type = 0;
-        EEPROMVar<float> rangeOn = 0;
-        EEPROMVar<float> rangeOff = 0;
-    };
 public:
 
-    TempCtrlRelay(THInterface *tiface, uint8_t rMax, float down, float up);
+    CtrlRelay *ctrlRelay;
 
-    void addRelay(RelayInterface *r, uint8_t i, uint8_t type, float rangeOn = 0.1, float rangeOff = 0.0);
+    TempCtrlRelay(THInterface *tiface, CtrlRelay *ctrlRelay, float down, float up, uint8_t s);
 
-    auto getRelayState(uint8_t i) -> int;
+    auto getRelayState() const -> int
+    {
+        return ctrlRelay->relay->isOn() ? RELAY_ON : RELAY_OFF;
+    }
 
-    void setRelayState(uint8_t i, uint8_t state);
+    void setRelayState(uint8_t state)
+    {
+        if (state == RELAY_ON) {
+            setMode(MODE_MANUAL);
+            ctrlRelay->call(RELAY_ON, 0);
+        } else if (state == RELAY_OFF) {
+            setMode(MODE_MANUAL);
+            ctrlRelay->call(RELAY_OFF, 0);
+        }
+        sendCommand(CMD_RELAY);
+    }
 
-    auto getRelayRangeOn(uint8_t i) -> float;
+    void setMode(uint8_t m) override;
 
-    auto getRelayRangeOff(uint8_t i) -> float;
-
-    void setRelayRangeOn(uint8_t i, float value);
-
-    void setRelayRangeOff(uint8_t i, float value);
+    void call(uint8_t type, uint8_t idx) override;
 
     void sendValues() override;
 
-    void call(uint8_t type, uint8_t idx) override
-    {};
-
 protected:
-
-    void relayOn(uint8_t i);
-
-    void relayOff(uint8_t i);
 
     void control() override;
 
-    THInterface *tiface;
-    RelayControl *relayControl;
-    uint8_t relayMax;
+    uint8_t settings = 0;
 };
 
 

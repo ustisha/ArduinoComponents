@@ -9,7 +9,7 @@ void TempCtrlNet::sendCommandData(RadioInterface *n, uint8_t r, uint8_t rp, uint
     } else if (cmd == CMD_UP_LIMIT) {
         sendPacket(n, r, rp, cmd, lround(tempCtrl->upLimit * 100));
     } else if (cmd == CMD_TIMEOUT) {
-        sendPacket(n, r, rp, cmd, lround(tempCtrl->timeout / 1000));
+        sendPacket(n, r, rp, cmd, lround(tempCtrl->timeout));
     }
 }
 

@@ -1,7 +1,5 @@
-#ifdef defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) \
-|| defined (__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__) || defined (__AVR_ATtiny25__) \
-|| defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
-
+#include <Config.h>
+#ifdef VCC_ENABLED
 #ifndef VCCNET_H
 #define VCCNET_H
 

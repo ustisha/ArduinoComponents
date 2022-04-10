@@ -4,8 +4,9 @@ TempCtrl::TempCtrl(THInterface *tiface, float down, float up) :
         downLimit(down),
         upLimit(up),
         mode(MODE_AUTO),
-        timeout(60000),
-        init(0)
+        timeout(60),
+        init(0),
+        tiface(tiface)
 {
 
     init.restore();
@@ -14,13 +15,14 @@ TempCtrl::TempCtrl(THInterface *tiface, float down, float up) :
         upLimit.save();
         mode.save();
         timeout.save();
+        init = 1;
+        init.save();
     } else {
         downLimit.restore();
         upLimit.restore();
         mode.restore();
         timeout.restore();
     }
-
     last = millis();
 
 #ifdef SERIAL_DEBUG
@@ -29,8 +31,9 @@ TempCtrl::TempCtrl(THInterface *tiface, float down, float up) :
     Format::floatVar(dlBuf, downLimit);
     Format::floatVar(ulBuf, upLimit);
 
-    IF_SERIAL_DEBUG(printf_P(PSTR("[TempCtrl::TempCtrl] Mode: %d, Down limit: %s, Up limit: %s\n"),
+    IF_SERIAL_DEBUG(printf_P(PSTR("[TempCtrl::TempCtrl] Mode: %d, Timeout: %d Down limit: %s, Up limit: %s\n"),
                              (int) mode,
+                             (uint16_t) timeout,
                              dlBuf,
                              ulBuf));
 #endif
@@ -43,10 +46,12 @@ void TempCtrl::tick(uint16_t sleep)
     }
 
     sleepTime += sleep;
-    unsigned long m;
+    unsigned long m, t;
     m = millis() + sleepTime;
-    if (m >= (last + timeout) || last < timeout) {
-        last += timeout;
+    t = timeout * 1000;
+    if (m >= (last + t) || last < t) {
+        last += t;
+        IF_SERIAL_DEBUG(printf_P(PSTR("[TempCtrl::tick] Control. Millis: %lu\n"), m));
         control();
     }
 }
@@ -57,8 +62,6 @@ void TempCtrl::setMode(uint8_t m)
     mode.save();
     if (mode == MODE_AUTO) {
         control();
-    } else if (mode == MODE_MANUAL) {
-
     }
     sendCommand(CMD_MODE);
 }
@@ -85,7 +88,7 @@ void TempCtrl::setUpLimit(float limit)
 
 void TempCtrl::setTimeout(uint16_t t)
 {
-    timeout = t * 1000;
+    timeout = t;
     timeout.save();
     if (mode == MODE_AUTO) {
         control();

@@ -1,7 +1,6 @@
 #include "../include/TempCtrlServo.h"
 
 TempCtrlServo::TempCtrlServo(THInterface *tiface, uint8_t sMax, float down, float up) : TempCtrl(tiface, down, up),
-                                                                                        tiface(tiface),
                                                                                         servoControl(new ServoControl[sMax]{}),
                                                                                         servoMax(sMax)
 {
