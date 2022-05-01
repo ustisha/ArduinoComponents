@@ -13,6 +13,7 @@
 #include <Format.h>
 #include <EEPROMex.h>
 #include <EEPROMVar.h>
+#include <GroupHandlerInterface.h>
 
 class TempCtrl : public NetInterface, virtual public HandlerInterface
 {
@@ -55,6 +56,12 @@ public:
 
     void setTimeout(uint16_t t);
 
+    void addGroupHandler(GroupHandlerInterface *handlerInterface, uint8_t idx)
+    {
+        groupHandler = handlerInterface;
+        groupIdx = idx;
+    }
+
     virtual void sendValues();
 
     virtual void call(uint8_t type, uint8_t idx) = 0;
@@ -63,7 +70,9 @@ protected:
 
     virtual void control() = 0;
 
-    THInterface *tiface;
+    THInterface *tiface  = nullptr;
+    GroupHandlerInterface *groupHandler = nullptr;
+    uint8_t groupIdx;
     unsigned long sleepTime = 0;
     unsigned long last;
 };

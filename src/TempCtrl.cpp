@@ -64,6 +64,9 @@ void TempCtrl::setMode(uint8_t m)
         control();
     }
     sendCommand(CMD_MODE);
+    if (groupHandler != nullptr) {
+        groupHandler->syncMode();
+    }
 }
 
 void TempCtrl::setDownLimit(float limit)

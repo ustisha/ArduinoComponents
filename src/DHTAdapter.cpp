@@ -14,7 +14,7 @@ void DHTAdapter::read()
     hum = dht->readHumidity();
     if (isnan(temp) || isnan(hum)) {
         status = -1;
-        IF_SERIAL_DEBUG(printf_P(PSTR("[DHTAdapter::tick] Is nan return\n")));
+        IF_SERIAL_DEBUG(printf_P(PSTR("[DHTAdapter::read] Is nan return\n")));
         return;
     }
     status = 1;
@@ -25,6 +25,6 @@ void DHTAdapter::read()
     Format::floatVar(tBuf, temp);
     char hBuf[8]{};
     Format::floatVar(hBuf, hum);
-    IF_SERIAL_DEBUG(printf_P(PSTR("[DHTAdapter::tick] Read done. Temp: %s, Hum: %s\n"), tBuf, hBuf));
+    IF_SERIAL_DEBUG(printf_P(PSTR("[DHTAdapter::read] Read done. Temp: %s, Hum: %s\n"), tBuf, hBuf));
 #endif
 }

@@ -9,14 +9,17 @@ TempCtrlRelay::TempCtrlRelay(THInterface *tiface, CtrlRelay *ctrlRelay, float do
 void TempCtrlRelay::call(uint8_t type, uint8_t idx)
 {
     ctrlRelay->call(type, idx);
+    sendCommand(CMD_RELAY);
+    if (groupHandler != nullptr) {
+        groupHandler->call(type, idx);
+    }
 }
 
 void TempCtrlRelay::setMode(uint8_t m)
 {
     if (m == MODE_MANUAL) {
-        ctrlRelay->call(RELAY_OFF, 0);
+        call(RELAY_OFF, groupIdx);
     }
-    sendCommand(CMD_RELAY);
     TempCtrl::setMode(m);
 }
 
@@ -41,23 +44,18 @@ void TempCtrlRelay::control()
     if (settings & TYPE_BELOW_DOWN_LIMIT) {
         IF_SERIAL_DEBUG(printf_P(PSTR("[TempCtrlRelay::control] BELOW_DOWN ABOVE_UP \n")));
         if (value < downLimit) {
-            ctrlRelay->call(RELAY_ON, 0);
-            sendCommand(CMD_RELAY);
+            call(RELAY_ON, groupIdx);
         } else if (value > upLimit) {
-            ctrlRelay->call(RELAY_OFF, 0);
-            sendCommand(CMD_RELAY);
+            call(RELAY_OFF, groupIdx);
         }
-    } else if (settings & TYPE_ABOVE_DOWN_LIMIT) {
-        IF_SERIAL_DEBUG(printf_P(PSTR("[TempCtrlRelay::control] ABOVE_DOWN BELOW_UP \n")));
-        if (value > downLimit) {
-            ctrlRelay->call(RELAY_ON, 0);
-            sendCommand(CMD_RELAY);
-        } else if (value < upLimit) {
-            ctrlRelay->call(RELAY_OFF, 0);
-            sendCommand(CMD_RELAY);
+    } else if (settings & TYPE_ABOVE_UP_LIMIT) {
+        IF_SERIAL_DEBUG(printf_P(PSTR("[TempCtrlRelay::control] ABOVE_UP BELOW_DOWN \n")));
+        if (value > upLimit) {
+            call(RELAY_ON, groupIdx);
+        } else if (value < downLimit) {
+            call(RELAY_OFF, groupIdx);
         }
     }
-    sendCommand(CMD_RELAY);
 }
 
 void TempCtrlRelay::sendValues()

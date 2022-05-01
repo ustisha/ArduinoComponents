@@ -31,10 +31,10 @@ public:
     {
         if (state == RELAY_ON) {
             setMode(MODE_MANUAL);
-            ctrlRelay->call(RELAY_ON, 0);
+            call(RELAY_ON, groupIdx);
         } else if (state == RELAY_OFF) {
             setMode(MODE_MANUAL);
-            ctrlRelay->call(RELAY_OFF, 0);
+            call(RELAY_OFF, groupIdx);
         }
         sendCommand(CMD_RELAY);
     }
