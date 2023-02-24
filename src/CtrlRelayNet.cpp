@@ -19,11 +19,11 @@ void CtrlRelayNet::receiveCommandData(Packet *p)
         }
     } else if (p->getCommand() == CMD_RELAY) {
         if (p->getData() == RELAY_ON) {
-            ctrl->relay->on();
+            ctrl->call(RELAY_ON, 0);
         } else if (p->getData() == RELAY_OFF) {
-            ctrl->relay->off();
+            ctrl->call(RELAY_OFF, 0);
         } else if (p->getData() == RELAY_CHANGE) {
-            ctrl->relay->change();
+            ctrl->call(RELAY_CHANGE, 0);
         }
     }
 }
