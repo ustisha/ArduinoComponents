@@ -22,7 +22,7 @@ class LightController : public NetInterface, public DisplayHandler, virtual publ
     static const uint8_t TYPE_AUTO = 3;
 public:
 
-    EEPROMVar<uint32_t> timeout;
+    EEPROMVar<uint16_t> timeout;
     EEPROMVar<float> activityRatio;
     EEPROMVar<uint16_t> activityLimit;
     EEPROMVar<float> recallRatio;
@@ -51,7 +51,7 @@ public:
 
     void setEnergyLevel(uint8_t lvl);
 
-    void setTimeout(uint32_t t);
+    void setTimeout(uint16_t t);
 
     void setActivityRatio(float ratio);
 
@@ -61,7 +61,7 @@ public:
 
     void setRecallTimeout(uint16_t t);
 
-    auto getOffTime() const -> long;
+    uint16_t getOffTime() const;
 
     void sendValues();
 
@@ -75,8 +75,8 @@ protected:
     Relay *relay{};
     Button *modeButton = nullptr;
 
-    unsigned long offTime;
-    unsigned long timeOff;
+    uint32_t offTime;
+    uint32_t timeOff;
     uint8_t activity;
     uint8_t pirIdx = 0;
 

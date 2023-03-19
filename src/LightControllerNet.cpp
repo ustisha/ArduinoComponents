@@ -6,13 +6,13 @@ void LightControllerNet::sendCommandData(RadioInterface *n, uint8_t r, uint8_t r
     } else if (cmd == CMD_MODE) {
         sendPacket(n, r, rp, cmd, lightCtrl->mode);
     } else if (cmd == CMD_TIMEOUT) {
-        sendPacket(n, r, rp, cmd, lightCtrl->timeout);
+        sendPacket(n, r, rp, cmd, (int16_t) lightCtrl->timeout);
     } else if (cmd == CMD_ACTIVITY_RATIO) {
-        sendPacket(n, r, rp, cmd, lround(lightCtrl->activityRatio * 100));
+        sendPacket(n, r, rp, cmd, lround(double(lightCtrl->activityRatio) * 100));
     } else if (cmd == CMD_ACTIVITY_LIMIT) {
         sendPacket(n, r, rp, cmd, lightCtrl->activityLimit);
     } else if (cmd == CMD_RECALL_RATIO) {
-        sendPacket(n, r, rp, cmd, lround(lightCtrl->recallRatio * 100));
+        sendPacket(n, r, rp, cmd, lround(double(lightCtrl->recallRatio) * 100));
     } else if (cmd == CMD_RECALL_TIMEOUT) {
         sendPacket(n, r, rp, cmd, lightCtrl->recallTimeout);
     } else if (cmd == CMD_TIME_LEFT) {
