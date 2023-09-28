@@ -13,56 +13,21 @@ class ValueInt : public ValueIntInterface, NetInterface
 
 public:
     using NetInterface::addNet;
+    using NetInterface::sendCommand;
 
     EEPROMVar<uint8_t> init;
     EEPROMVar<int16_t> inputMin;
     EEPROMVar<int16_t> inputMax;
 
-    ValueInt() : init(0), inputMin(0), inputMax(100)
-    {
-        init.restore();
-        if (init != 1) {
-            inputMin.save();
-            inputMax.save();
-            init = 1;
-            init.save();
-        } else {
-            inputMin.restore();
-            inputMax.restore();
-        }
-    }
+    ValueInt();
 
-    void setInputMin(int16_t inMin)
-    {
-        inputMin = inMin;
-        inputMin.save();
-        sendCommand(CMD_MAP_MIN);
-        read();
-        sendCommand(CMD_VALUE);
-    }
+    void setInputMin(int16_t inMin);
 
-    void setInputMax(int16_t inMax)
-    {
-        inputMax = inMax;
-        inputMax.save();
-        sendCommand(CMD_MAP_MAX);
-        read();
-        sendCommand(CMD_VALUE);
-    }
+    void setInputMax(int16_t inMax);
 
-    void setOutputValues(int16_t outMin = 0, int16_t outMax = 100)
-    {
-        useMap = true;
-        outputMin = outMin;
-        outputMax = outMax;
-    }
+    void setOutputValues(int16_t outMin = 0, int16_t outMax = 100);
 
-    void sendValues()
-    {
-        sendCommand(CMD_VALUE);
-        sendCommand(CMD_MAP_MIN);
-        sendCommand(CMD_MAP_MAX);
-    }
+    void sendValues();
 
     void set(long v)
     {
