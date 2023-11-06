@@ -115,11 +115,11 @@ void LightController::setMode(uint8_t m) {
     mode = m;
     mode.save();
     sendCommand(CMD_MODE);
-    sendCommand(CMD_TIME_LEFT);
     if (mode == MODE_AUTO) {
         setRelayState(RELAY_OFF);
         resetValues();
     }
+    sendCommand(CMD_TIME_LEFT);
     render();
 }
 
@@ -175,6 +175,7 @@ void LightController::setRecallTimeout(uint16_t t) {
 void LightController::setRelayState(uint8_t state) {
     if (state == RELAY_ON) {
         relay->on();
+        sendCommand(CMD_TIME_LEFT);
     } else if (state == RELAY_OFF) {
         relay->off();
     }
@@ -183,28 +184,25 @@ void LightController::setRelayState(uint8_t state) {
 }
 
 void LightController::setState(uint8_t state) {
+    timeOff = 0;
     setRelayState(state);
     setMode(MODE_MANUAL);
+    sendCommand(CMD_TIME_LEFT);
 }
 
 uint16_t LightController::getOffTime() const {
     int32_t remain = timeOff - millis();
-    return remain > 0 ? lround(double(remain) / 1000) : 0;
+    return remain > 0 ? (remain / 1000) : 0;
 }
 
 void LightController::tick() {
     if (modeButton != nullptr) {
         modeButton->tick();
     }
-
-    if (mode == MODE_MANUAL) {
-        return;
-    }
     for (uint8_t b = 0; b < pirIdx; b++) {
         pirs[b]->tick();
     }
     unsigned long m = millis();
-
     if (timeOff != 0) {
         if (((timeOff - m) % 2000) == 0) {
             sendCommand(CMD_TIME_LEFT);
